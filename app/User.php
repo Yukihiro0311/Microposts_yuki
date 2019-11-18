@@ -53,8 +53,21 @@ class User extends Authenticatable
         // 既にフォローしているかを確認するためのメソッドを作る。
         //where('A','B') AとBが同じ
         //userがフォローしているuserのidが、フォローしているuserのidが与えられたuserのidと同じか。
-        
-        
+    }
+    
+//------------------------------------------------------------------------------フォローしている人の
+        public function feed_microposts()
+    {
+            $follow_user_ids = $this->followings()->pluck('users.id')->toArray();
+            //UserがフォローしているUserのidの配列を取得。
+            //pluck()は与えられた引数のテーブルのカラム名だけを抜き出す。
+            //toArray()は通常の配列に変換する。
+            
+            $follow_user_ids[] = $this->id;
+            //自分のidも配列に追加する。自分自身のマイクロポストも表示させるため。
+            
+            return Micropost::whereIn('user_id', $follow_user_ids);
+            //Class Micropostにおいてmicropostsテーブルのuser_idで$follow_user_idsの中にあるユーザidを含むもの全てを取得しreturnさせる。
     }
 
     public function follow($userId)//--------------------------------------保存
@@ -98,5 +111,6 @@ class User extends Authenticatable
             return false;
         }
     }
+
 }
 

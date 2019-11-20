@@ -18,7 +18,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
         //URIーコントローラー名ー指定：アクション名
         
-//-------------------------------------------authグループ内のusers/{id}グループ 
+//----------------------------------------authグループ内のusers/{id}グループ
         Route::group(['prefix' => 'users/{id}'], function () {
             //pefixによってURIはfollow/users/{id}のようになる。
             
@@ -27,8 +27,20 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('followings', 'UsersController@followings')->name('users.followings');
             Route::get('followers', 'UsersController@followers')->name('users.followers');
         });
+//------------------------------------------------------------------------------お気に入り機能
+        Route::group(['prefix' => 'microposts/{id}'], function(){
+            //pefixによってURIはfavorite/microposts/{id}のようになる。
+            
+            Route::post('favorite','FavoritesController@store')->name('favorites.favorite');
+            //お気に入りする。
+            Route::delete('unfavorite','FavoritesController@destroy')->name('favorites.unfavorite');
+            //お気に入りを削除する。
+            
+            Route::get('my_favorite', 'UsersController@my_favorite')->name('my_favorite');
+         });
         
         Route::resource('microposts', 'MicropostsController', ['only' => ['store', 'destroy']]);
 });
 
-//------------------------------------------------------------------------------
+
+

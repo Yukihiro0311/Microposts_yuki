@@ -18,7 +18,7 @@ class CreateUserFollowTable extends Migration
             $table->timestamps();
             
             //外部キー設定
-            $table->foreign('user_id')->references('id')->on('users')->onDlete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('follow_id')->references('id')->on('users')->onDlete('cascade');
             
             //follow_idは名前は違えどuser_idと同じ立ち位置。

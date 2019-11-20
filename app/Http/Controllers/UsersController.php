@@ -61,4 +61,22 @@ class UsersController extends Controller
 
         return view('users.followers', $data);
     }
+    
+    public function my_favorite($id)
+    {
+        $user = User::find($id);
+        //仮引数$idが実引数を受けてUserを探す
+        
+        $favorites = $user->my_favorite()->get();
+        //Userのfavoriteを取得して、favaritesに代入する。
+        
+        $data = [
+            'user'=>$user,
+            'favorites' => $favorites,
+            ];
+        
+        $data += $this->counts($user);
+        
+        return view('users.favorites',$data);
+    }
 }
